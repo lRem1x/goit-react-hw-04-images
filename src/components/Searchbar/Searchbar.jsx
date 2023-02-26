@@ -1,18 +1,14 @@
-import { Component } from "react";
+import { useState } from "react";
 import { ImSearch } from "react-icons/im"
 import PropTypes from 'prop-types';
 import { SearchbarWrapper } from "./SearchbarWrapper.styled";
 
 
-export class SearchBar extends Component {
-    state = {
-        imageName: '',
-    }
+export const SearchBar = ({onSubmit}) => {
 
-    handleSubmit = (e) => {
+    const [imageName, setImageName] = useState('')
 
-        const { imageName } = this.state
-        const { onSubmit } = this.props
+    const handleSubmit = (e) => {
  
         e.preventDefault();
 
@@ -23,44 +19,28 @@ export class SearchBar extends Component {
 
         onSubmit(imageName)
         
-        this.setState({
-            imageName: '',
-        })
+        setImageName('')
     }
 
-    handleNameChange = (e) => {
-        this.setState({
-            imageName: e.currentTarget.value,
-        })
-    };
+    return (
+        <SearchbarWrapper>
+            <form className="SearchForm" onSubmit={handleSubmit}>
+                <button type="submit" className="SearchForm-button">
+                    <span className="SearchForm-button-label"><ImSearch/></span>
+                </button>
 
-
-
-
-    render() {
-        const { imageName } = this.state;
-
-        return (
-            <SearchbarWrapper>
-                <form className="SearchForm" onSubmit={this.handleSubmit}>
-                    <button type="submit" className="SearchForm-button">
-                        <span className="SearchForm-button-label"><ImSearch/></span>
-                    </button>
-
-                    <input
-                        onChange={this.handleNameChange}
-                        value={imageName}
-                        className="SearchForm-input"
-                        type="text"
-                        autoComplete="off"
-                        autoFocus
-                        placeholder="Search images and photos"
-                    />
-                </form>
-            </SearchbarWrapper>
-        );
-    };
-    
+                <input
+                    onChange={e => setImageName(e.currentTarget.value)}
+                    value={imageName}
+                    className="SearchForm-input"
+                    type="text"
+                    autoComplete="off"
+                    autoFocus
+                    placeholder="Search images and photos"
+                />
+            </form>
+        </SearchbarWrapper>
+    );
 };
 
 SearchBar.propTypes = {
